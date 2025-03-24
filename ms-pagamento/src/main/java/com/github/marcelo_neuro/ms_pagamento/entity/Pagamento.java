@@ -23,7 +23,7 @@ public class Pagamento {
     @Column(nullable = false)
     private Long pedidoId;
     @Column(nullable = false)
-    private Long formaPagamento;
+    private Long formaDePagamentoId;
 
     public Pagamento(Long id, BigDecimal valor, String nome, String numeroDoCartao,
                      String validade, String codigoDeSeguranca, Status status, Long pedidoId,
@@ -36,7 +36,7 @@ public class Pagamento {
         this.codigoDeSeguranca = codigoDeSeguranca;
         this.status = status;
         this.pedidoId = pedidoId;
-        this.formaPagamento = formaPagamento;
+        this.formaDePagamentoId = formaPagamento;
     }
 
     public Pagamento() {}
@@ -105,12 +105,12 @@ public class Pagamento {
         this.pedidoId = pedidoId;
     }
 
-    public Long getFormaPagamento() {
-        return formaPagamento;
+    public Long getFormaDePagamentoId() {
+        return formaDePagamentoId;
     }
 
-    public void setFormaPagamento(Long formaPagamento) {
-        this.formaPagamento = formaPagamento;
+    public void setFormaDePagamentoId(Long formaDePagamentoId) {
+        this.formaDePagamentoId = formaDePagamentoId;
     }
 
     @Override

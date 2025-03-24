@@ -1,9 +1,9 @@
 package com.github.marcelo_neuro.ms_pagamento.controller.handlers;
 
-import com.github.marcelo_neuro.cp01eventos.controller.handlers.dto.CustomErrorDTO;
-import com.github.marcelo_neuro.cp01eventos.controller.handlers.dto.ValidationErrorDTO;
-import com.github.marcelo_neuro.cp01eventos.service.exceptions.DatabaseException;
-import com.github.marcelo_neuro.cp01eventos.service.exceptions.ResourceNotFoundException;
+import com.github.marcelo_neuro.ms_pagamento.controller.handlers.dto.CustomErrorDTO;
+import com.github.marcelo_neuro.ms_pagamento.controller.handlers.dto.ValidationErrorDTO;
+import com.github.marcelo_neuro.ms_pagamento.service.exception.DatabaseException;
+import com.github.marcelo_neuro.ms_pagamento.service.exception.ResourceNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,6 +1,7 @@
 package com.github.marcelo_neuro.ms_pagamento.service;
 
 import com.github.marcelo_neuro.ms_pagamento.dto.PagamentoDTO;
+import com.github.marcelo_neuro.ms_pagamento.entity.Pagamento;
 import com.github.marcelo_neuro.ms_pagamento.repository.PagamentoRepository;
 import com.github.marcelo_neuro.ms_pagamento.service.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,5 +28,26 @@ public class PagamentoService {
     public PagamentoDTO getById(Long id) {
         return new PagamentoDTO(repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Recurso não encontrado id: " + id)));
+    }
+
+    @Transactional
+    public PagamentoDTO create(PagamentoDTO dto) {
+        Pagamento entity = new Pagamento();
+        copyDtoToEntity(dto, entity);
+
+        entity = repository.save(entity);
+
+        return new PagamentoDTO(entity);
+    }
+
+    private void copyDtoToEntity(PagamentoDTO dto, Pagamento entity) {
+        entity.setId(dto.getId());
+        entity.setNome(dto.getNome());
+        entity.setValidade(dto.getValidade());
+        entity.setValor(dto.getValor());
+        entity.setCodigoDeSeguranca(dto.getCodigoDeSeguranca());
+        entity.setNumeroDoCartao(dto.getNumeroDoCartao());
+        entity.setPedidoId(dto.getPedidoId());
+        entity.setFormaDePagamentoId(dto.getFormaPagamentoId());
     }
 }

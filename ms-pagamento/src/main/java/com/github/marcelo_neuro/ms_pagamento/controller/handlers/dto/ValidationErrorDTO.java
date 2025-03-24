@@ -1,12 +1,14 @@
 package com.github.marcelo_neuro.ms_pagamento.controller.handlers.dto;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class ValidationErrorDTO extends CustomErrorDTO{
 
-    private Set<FieldMessageDTO> errors = new HashSet<>();
+    private List<FieldMessageDTO> errors = new ArrayList<>();
 
     public ValidationErrorDTO(Instant timestamp, Integer status, String message, String path) {
         super(timestamp, status, message, path);

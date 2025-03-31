@@ -58,6 +58,14 @@ public class PagamentoService {
         }
     }
 
+    @Transactional
+    public void delete(Long id) {
+        if(!repository.existsById(id)) {
+            throw new ResourceNotFoundException("Entidade não encontrada id:" + id);
+        }
+        repository.deleteById(id);
+    }
+
     private void copyDtoToEntity(PagamentoDTO dto, Pagamento entity) {
         entity.setId(dto.getId());
         entity.setNome(dto.getNome());

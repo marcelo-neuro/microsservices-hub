@@ -46,5 +46,11 @@ public class PagamentoController {
     public ResponseEntity<PagamentoDTO> update(@PathVariable Long id,
                                                @RequestBody PagamentoDTO requestDto) {
         return ResponseEntity.ok(service.updadte(id, requestDto));
-    } 
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        service.delete(id);
+        return ResponseEntity.ok().build();
+    }
 }

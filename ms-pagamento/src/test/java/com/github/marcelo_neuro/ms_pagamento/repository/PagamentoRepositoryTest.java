@@ -59,6 +59,6 @@ public class PagamentoRepositoryTest {
     @DisplayName("Dado id de entidade inexistente quando chamar Busca pagamento, deve-se retornar um Pagamento")
     public void givenAnExistedId_whenCallFindById_thenReturnEmpty() {
         Optional<Pagamento> pagamento = repository.findById(nonExistingId);
-        Assertions.assertTrue(pagamento.isEmpty());
+        Assertions.assertFalse(pagamento.isPresent());
     }
 }

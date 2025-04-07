@@ -48,10 +48,17 @@ public class PagamentoRepositoryTest {
     }
 
     @Test
-    @DisplayName("Dado id quando chamar Busca pagamento, deve-se retornar um Pagamento correspondente")
+    @DisplayName("Dado id quando chamar Busca pagamento, deve-se retornar um Pagamento")
     public void givenAnExistedId_whenCallFindById_thenReturnAPagamento() {
         Optional<Pagamento> pagamento = repository.findById(existingId);
 
-//        Assertions.assertTrue();
+        Assertions.assertTrue(pagamento.isPresent());
+    }
+
+    @Test
+    @DisplayName("Dado id de entidade inexistente quando chamar Busca pagamento, deve-se retornar um Pagamento")
+    public void givenAnExistedId_whenCallFindById_thenReturnEmpty() {
+        Optional<Pagamento> pagamento = repository.findById(nonExistingId);
+        Assertions.assertTrue(pagamento.isEmpty());
     }
 }

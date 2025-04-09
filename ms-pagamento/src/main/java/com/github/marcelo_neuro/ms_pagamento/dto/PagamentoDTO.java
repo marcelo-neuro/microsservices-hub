@@ -43,6 +43,8 @@ public class PagamentoDTO {
         this.formaPagamentoId = entity.getFormaDePagamentoId();
     }
 
+    public PagamentoDTO() {}
+
     public Long getId() {
         return id;
     }
@@ -78,4 +80,6 @@ public class PagamentoDTO {
     public Long getFormaPagamentoId() {
         return formaPagamentoId;
     }
+
+
 }

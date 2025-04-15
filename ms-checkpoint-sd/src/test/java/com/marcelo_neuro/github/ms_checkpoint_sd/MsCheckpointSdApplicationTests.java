@@ -1,10 +1,10 @@
-package com.github.marcelo_neuro.ms_pagamento;
+package com.marcelo_neuro.github.ms_checkpoint_sd;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class MsPagamentoApplicationTests {
+class MsCheckpointSdApplicationTests {
 
 	@Test
 	void contextLoads() {

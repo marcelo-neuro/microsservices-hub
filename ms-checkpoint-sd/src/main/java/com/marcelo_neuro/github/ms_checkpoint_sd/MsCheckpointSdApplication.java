@@ -1,13 +1,13 @@
-package com.github.marcelo_neuro.ms_pagamento;
+package com.marcelo_neuro.github.ms_checkpoint_sd;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class MsPagamentoApplication {
+public class MsCheckpointSdApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(MsPagamentoApplication.class, args);
+		SpringApplication.run(MsCheckpointSdApplication.class, args);
 	}
 
 }

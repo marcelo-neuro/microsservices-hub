@@ -17,12 +17,9 @@ public class Pagamento {
     private String numeroDoCartao;
     private String validade;
     private String codigoDeSeguranca;
-    @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
     private Status status;
-    @Column(nullable = false)
     private Long pedidoId;
-    @Column(nullable = false)
     private Long formaDePagamentoId;
 
     public Pagamento(Long id, BigDecimal valor, String nome, String numeroDoCartao,

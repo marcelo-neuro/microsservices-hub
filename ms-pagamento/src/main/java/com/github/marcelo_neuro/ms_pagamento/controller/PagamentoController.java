@@ -3,6 +3,7 @@ package com.github.marcelo_neuro.ms_pagamento.controller;
 import com.github.marcelo_neuro.ms_pagamento.dto.PagamentoDTO;
 import com.github.marcelo_neuro.ms_pagamento.entity.Pagamento;
 import com.github.marcelo_neuro.ms_pagamento.service.PagamentoService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +31,7 @@ public class PagamentoController {
     }
 
     @PostMapping
-    public ResponseEntity<PagamentoDTO> create(@RequestBody PagamentoDTO requestDto) {
+    public ResponseEntity<PagamentoDTO> create(@Valid @RequestBody PagamentoDTO requestDto) {
         PagamentoDTO responseDto = service.create(requestDto);
 
         URI uri = ServletUriComponentsBuilder

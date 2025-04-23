@@ -45,7 +45,7 @@ public class PagamentoController {
 
     @PutMapping("/{id}")
     public ResponseEntity<PagamentoDTO> update(@PathVariable Long id,
-                                               @RequestBody PagamentoDTO requestDto) {
+                                               @Valid @RequestBody PagamentoDTO requestDto) {
         return ResponseEntity.ok(service.updadte(id, requestDto));
     }
 

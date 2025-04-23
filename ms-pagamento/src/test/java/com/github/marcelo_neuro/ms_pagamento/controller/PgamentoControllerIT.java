@@ -37,7 +37,7 @@ public class PgamentoControllerIT {
         existingId = 1L;
         nonExistingId = 50L;
 
-        dto = Factory.createNewPagamentoDTO();
+        dto = Factory.createPagamentoDTO();
     }
 
     @Test
@@ -121,7 +121,7 @@ public class PgamentoControllerIT {
 
     @Test
     public void updateShouldUpdateAndReturnPagamentoDTOWhenIdExists() throws Exception {
-        mockMvc.perform(put("/pagamentos", existingId)
+        mockMvc.perform(put("/pagamentos/{id}", existingId)
                         .content(objectMapper.writeValueAsString(dto))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -131,5 +131,27 @@ public class PgamentoControllerIT {
                 .andExpect(jsonPath("nome").value(dto.getNome()))
                 .andExpect(jsonPath("valor").value(dto.getValor()))
                 .andExpect(jsonPath("status").value("CRIADO"));
+    }
+
+    @Test
+    public void updateShouldReturnNotFoundWhenIdDoesntExists() throws Exception {
+        mockMvc.perform(put("/pagamenots/{id}", nonExistingId)
+                        .content(objectMapper.writeValueAsString(dto))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void updateShouldThrowsExceptionWhenInvalidData() throws Exception {
+        dto = Factory.createNewPagamentoDTOWithInvalidData();
+
+        mockMvc.perform(put("/pagamentos/{id}", existingId)
+                        .content(objectMapper.writeValueAsString(dto))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
     }
 }

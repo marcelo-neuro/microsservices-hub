@@ -18,4 +18,8 @@ public class ItemDoPedido {
     private Integer quantidade;
     private String descricao;
     private Integer valorUnitario;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "pedido_id")
+    private Pedido pedido;
 }

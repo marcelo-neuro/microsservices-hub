@@ -3,6 +3,8 @@ package com.github.marcelo_neuro.ms_pedido.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -17,7 +19,7 @@ public class ItemDoPedido {
     private Long id;
     private Integer quantidade;
     private String descricao;
-    private Integer valorUnitario;
+    private BigDecimal valorUnitario;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "pedido_id")

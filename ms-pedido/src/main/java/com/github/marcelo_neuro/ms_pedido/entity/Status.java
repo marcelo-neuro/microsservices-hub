@@ -1,7 +1,7 @@
 package com.github.marcelo_neuro.ms_pedido.entity;
 
 public enum Status {
-    RELIZADO,
+    REALIZADO,
     AGUARDANDO_PAGAMENTO,
     PAGO,
     CONFIRMADO,

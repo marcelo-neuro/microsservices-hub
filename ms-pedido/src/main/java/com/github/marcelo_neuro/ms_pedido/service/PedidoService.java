@@ -7,6 +7,7 @@ import com.github.marcelo_neuro.ms_pedido.entity.Status;
 import com.github.marcelo_neuro.ms_pedido.repository.ItemDoPedidoRepository;
 import com.github.marcelo_neuro.ms_pedido.repository.PedidoRepository;
 import com.github.marcelo_neuro.ms_pedido.service.exception.ResourceNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,6 +51,25 @@ public class PedidoService {
         itemDoPedidoRepository.saveAll(entity.getItens());
 
         return new PedidoDTO(entity);
+    }
+
+    @Transactional
+    public PedidoDTO updatePedido(Long id, PedidoDTO dto) {
+        try {
+            Pedido entity = pedidoRepository.getReferenceById(id);
+            entity.setData(LocalDate.now());
+            entity.setStatus(Status.REALIZADO);
+
+            itemDoPedidoRepository.deleteByPedidoId(id);
+            copyToEntity(entity, dto);
+
+            entity = pedidoRepository.save(entity);
+            itemDoPedidoRepository.saveAll(entity.getItens());
+
+            return new PedidoDTO(entity);
+        } catch (EntityNotFoundException e) {
+            throw new ResourceNotFoundException("Recuso não encontrado, id: " + id);
+        }
     }
 
     private void copyToEntity(Pedido entity, PedidoDTO dto) {

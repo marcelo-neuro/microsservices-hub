@@ -1,6 +1,7 @@
 package com.github.marcelo_neuro.ms_pedido.dto;
 
 import com.github.marcelo_neuro.ms_pedido.entity.ItemDoPedido;
+import com.github.marcelo_neuro.ms_pedido.entity.Pedido;
 import com.github.marcelo_neuro.ms_pedido.entity.Status;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -32,4 +33,13 @@ public class PedioDTO {
     private Status status;
     private List<@Valid ItemDoPedido> itens = new ArrayList<>();
 
+    public PedioDTO(Pedido pedido) {
+        this.id = pedido.getId();
+        this.cpf = pedido.getCpf();
+        this.nome = pedido.getNome();
+        this.data = pedido.getData();
+        this.status = pedido.getStatus();
+
+        pedido.getItens().forEach(itens::add);
+    }
 }

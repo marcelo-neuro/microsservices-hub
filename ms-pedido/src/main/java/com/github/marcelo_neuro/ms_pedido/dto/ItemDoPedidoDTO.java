@@ -1,5 +1,6 @@
 package com.github.marcelo_neuro.ms_pedido.dto;
 
+import com.github.marcelo_neuro.ms_pedido.entity.ItemDoPedido;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -14,6 +15,7 @@ import java.math.BigDecimal;
 @Getter
 public class ItemDoPedidoDTO {
 
+    private Long id;
     @NotNull(message = "Quantidade requerida")
     @Positive(message = "Quantidade deve ser positivo")
     private Integer quantidade;
@@ -23,4 +25,11 @@ public class ItemDoPedidoDTO {
     @Positive(message = "Valor unitário deve ser positivo")
     private BigDecimal valorUnitario;
 
+
+    public ItemDoPedidoDTO(ItemDoPedido item) {
+        this.id = item.getId();
+        this.quantidade = item.getQuantidade();
+        this.descricao = item.getDescricao();
+        this.valorUnitario = item.getValorUnitario();
+    }
 }

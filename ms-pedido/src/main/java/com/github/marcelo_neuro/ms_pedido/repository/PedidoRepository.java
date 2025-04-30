@@ -1,4 +1,4 @@
-package com.github.marcelo_neuro.ms_pedido;
+package com.github.marcelo_neuro.ms_pedido.repository;
 
 import com.github.marcelo_neuro.ms_pedido.entity.Pedido;
 import org.springframework.data.jpa.repository.JpaRepository;

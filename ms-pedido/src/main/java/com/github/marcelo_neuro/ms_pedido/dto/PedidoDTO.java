@@ -19,7 +19,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-public class PedioDTO {
+public class PedidoDTO {
 
     private Long id;
     @NotEmpty(message = "CPF requerido")
@@ -33,7 +33,7 @@ public class PedioDTO {
     private Status status;
     private List<@Valid ItemDoPedido> itens = new ArrayList<>();
 
-    public PedioDTO(Pedido pedido) {
+    public PedidoDTO(Pedido pedido) {
         this.id = pedido.getId();
         this.cpf = pedido.getCpf();
         this.nome = pedido.getNome();

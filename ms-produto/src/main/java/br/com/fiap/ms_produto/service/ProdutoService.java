@@ -1,7 +1,6 @@
 package br.com.fiap.ms_produto.service;
 
-import br.com.fiap.ms_produto.dto.ProdutoRequestDTO;
-import br.com.fiap.ms_produto.dto.ProdutoResponseDTO;
+import br.com.fiap.ms_produto.dto.ProdutoDTO;
 import br.com.fiap.ms_produto.entities.Categoria;
 import br.com.fiap.ms_produto.entities.Produto;
 import br.com.fiap.ms_produto.repositories.CategoriaRepository;
@@ -26,43 +25,43 @@ public class ProdutoService {
     private CategoriaRepository categoriaRepository;
 
     @Transactional(readOnly = true)
-    public List<ProdutoResponseDTO> findAll() {
+    public List<ProdutoDTO> findAll() {
         List<Produto> list = repository.findAll();
-        return list.stream().map(ProdutoResponseDTO::new).toList();
+        return list.stream().map(ProdutoDTO::new).toList();
     }
 
     @Transactional(readOnly = true)
-    public ProdutoResponseDTO findById(Long id) {
+    public ProdutoDTO findById(Long id) {
 
         Produto entity = repository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Recurso não encontrado. Id: " + id)
         );
-        return new ProdutoResponseDTO(entity);
+        return new ProdutoDTO(entity);
     }
 
     @Transactional
-    public ProdutoResponseDTO insert(ProdutoRequestDTO requestDTO) {
+    public ProdutoDTO insert(ProdutoDTO requestDTO) {
 
         try {
             Produto entity = new Produto();
             // metodo auxiliar para converter DTO para Entity
             toEntity(requestDTO, entity);
             entity = repository.save(entity);
-            return new ProdutoResponseDTO(entity);
+            return new ProdutoDTO(entity);
         } catch (DataIntegrityViolationException ex) {
             throw new DatabaseException("Violação de integridade referencial - Categoria ID: "
-                    + requestDTO.categoria().getId());
+                    + requestDTO.getCategoria().getId());
         }
     }
 
     @Transactional
-    public ProdutoResponseDTO update(Long id, ProdutoRequestDTO requestDTO){
+    public ProdutoDTO update(Long id, ProdutoDTO requestDTO){
 
         try{
             Produto entity = repository.getReferenceById(id);
             toEntity(requestDTO, entity);
             entity = repository.save(entity);
-            return new ProdutoResponseDTO(entity);
+            return new ProdutoDTO(entity);
         } catch (EntityNotFoundException ex){
             throw new ResourceNotFoundException("Recurso não encontrado. Id: " + id);
         }
@@ -77,13 +76,13 @@ public class ProdutoService {
         repository.deleteById(id);
     }
 
-    private void toEntity(ProdutoRequestDTO requestDTO, Produto entity) {
-        entity.setNome(requestDTO.nome());
-        entity.setDescricao(requestDTO.descricao());
-        entity.setValor(requestDTO.valor());
+    private void toEntity(ProdutoDTO requestDTO, Produto entity) {
+        entity.setNome(requestDTO.getNome());
+        entity.setDescricao(requestDTO.getDescricao());
+        entity.setValor(requestDTO.getValor());
 
         // Objeto completo gerenciado
-        Categoria categoria = categoriaRepository.getReferenceById(requestDTO.categoria().getId());
+        Categoria categoria = categoriaRepository.getReferenceById(requestDTO.getCategoria().getId());
         entity.setCategoria(categoria);
     }
 

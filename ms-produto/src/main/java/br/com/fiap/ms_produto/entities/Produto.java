@@ -34,5 +34,5 @@ public class Produto {
             joinColumns = @JoinColumn(name = "produto_id"),
             inverseJoinColumns = @JoinColumn(name = "loja_id")
     )
-    private Set<Loja> loja = new HashSet<>();
+    private Set<Loja> lojas = new HashSet<>();
 }

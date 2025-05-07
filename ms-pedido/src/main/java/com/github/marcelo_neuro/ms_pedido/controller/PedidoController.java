@@ -4,7 +4,6 @@ import com.github.marcelo_neuro.ms_pedido.dto.PedidoDTO;
 import com.github.marcelo_neuro.ms_pedido.service.PedidoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -43,5 +42,17 @@ public class PedidoController {
                 .toUri();
 
         return  ResponseEntity.created(uri).body(dto);
+    }
+
+    @PutMapping(path = "/{id}")
+    public ResponseEntity<PedidoDTO> update(@PathVariable Long id, @RequestBody @Valid PedidoDTO dto) {
+        dto = service.update(id, dto);
+        return ResponseEntity.ok(dto);
+    }
+
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        service.delete(id);
+        return ResponseEntity.ok().build();
     }
 }

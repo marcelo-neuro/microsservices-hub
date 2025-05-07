@@ -54,7 +54,7 @@ public class PedidoService {
     }
 
     @Transactional
-    public PedidoDTO updatePedido(Long id, PedidoDTO dto) {
+    public PedidoDTO update(Long id, PedidoDTO dto) {
         try {
             Pedido entity = pedidoRepository.getReferenceById(id);
             entity.setData(LocalDate.now());
@@ -70,6 +70,13 @@ public class PedidoService {
         } catch (EntityNotFoundException e) {
             throw new ResourceNotFoundException("Recuso não encontrado, id: " + id);
         }
+    }
+
+    public void delete(Long id) {
+        if(!pedidoRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Recurso não encontrado. Id: "  + id);
+        }
+        pedidoRepository.deleteById(id);
     }
 
     private void copyToEntity(Pedido entity, PedidoDTO dto) {

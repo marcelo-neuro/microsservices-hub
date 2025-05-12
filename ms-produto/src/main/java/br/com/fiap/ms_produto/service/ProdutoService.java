@@ -4,6 +4,7 @@ import br.com.fiap.ms_produto.dto.ProdutoDTO;
 import br.com.fiap.ms_produto.entities.Categoria;
 import br.com.fiap.ms_produto.entities.Produto;
 import br.com.fiap.ms_produto.repositories.CategoriaRepository;
+import br.com.fiap.ms_produto.repositories.LojaRepository;
 import br.com.fiap.ms_produto.repositories.ProdutoRepository;
 import br.com.fiap.ms_produto.service.exceptions.DatabaseException;
 import br.com.fiap.ms_produto.service.exceptions.ResourceNotFoundException;
@@ -23,6 +24,9 @@ public class ProdutoService {
 
     @Autowired
     private CategoriaRepository categoriaRepository;
+
+    @Autowired
+    private LojaRepository lojaRepository;
 
     @Transactional(readOnly = true)
     public List<ProdutoDTO> findAll() {
@@ -84,6 +88,9 @@ public class ProdutoService {
         // Objeto completo gerenciado
         Categoria categoria = categoriaRepository.getReferenceById(requestDTO.getCategoria().getId());
         entity.setCategoria(categoria);
+
+        entity.getLojas().clear();
+        requestDTO.getLojas().forEach(l -> entity.getLojas().add(lojaRepository.getReferenceById(l.getId())));
     }
 
 }

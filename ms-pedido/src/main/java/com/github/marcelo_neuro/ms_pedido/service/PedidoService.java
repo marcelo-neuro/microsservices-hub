@@ -90,7 +90,7 @@ public class PedidoService {
             ip.setQuantidade(p.getQuantidade());
             ip.setDescricao(p.getDescricao());
             ip.setValorUnitario(p.getValorUnitario());
-            ip.setPedido(p.getPedido());
+            ip.setPedido(entity);
 
             entity.getItens().add(ip);
         });

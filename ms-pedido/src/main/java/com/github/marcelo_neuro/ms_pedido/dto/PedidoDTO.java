@@ -32,7 +32,7 @@ public class PedidoDTO {
     @Enumerated(EnumType.STRING)
     private Status status;
     @NotEmpty(message = "Deve conter ao menos um item.")
-    private List<@Valid ItemDoPedido> itens = new ArrayList<>();
+    private List<@Valid ItemDoPedidoDTO> itens = new ArrayList<>();
 
     public PedidoDTO(Pedido pedido) {
         this.id = pedido.getId();
@@ -41,6 +41,8 @@ public class PedidoDTO {
         this.data = pedido.getData();
         this.status = pedido.getStatus();
 
-        pedido.getItens().forEach(itens::add);
+        pedido.getItens().forEach((i) -> {
+            itens.add(new ItemDoPedidoDTO(i));
+        });
     }
 }

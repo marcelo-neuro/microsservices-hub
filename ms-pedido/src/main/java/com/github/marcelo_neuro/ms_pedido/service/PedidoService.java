@@ -46,7 +46,7 @@ public class PedidoService {
         entity.setData(LocalDate.now());
         entity.setStatus(Status.REALIZADO);
         copyToEntity(entity, dto);
-
+        entity.calcularTotalPedido();
         entity = pedidoRepository.save(entity);
         itemDoPedidoRepository.saveAll(entity.getItens());
 
@@ -62,6 +62,7 @@ public class PedidoService {
 
             itemDoPedidoRepository.deleteByPedidoId(id);
             copyToEntity(entity, dto);
+            entity.calcularTotalPedido();
 
             entity = pedidoRepository.save(entity);
             itemDoPedidoRepository.saveAll(entity.getItens());

@@ -12,6 +12,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,19 +31,23 @@ public class PedidoDTO {
     private String nome;
     private LocalDate data;
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private StatusDTO status;
     @NotEmpty(message = "Deve conter ao menos um item.")
     private List<@Valid ItemDoPedidoDTO> itens = new ArrayList<>();
+    private BigDecimal valorTotal;
 
     public PedidoDTO(Pedido pedido) {
         this.id = pedido.getId();
         this.cpf = pedido.getCpf();
         this.nome = pedido.getNome();
         this.data = pedido.getData();
-        this.status = pedido.getStatus();
+        this.status = new StatusDTO(pedido.getStatus());
 
         pedido.getItens().forEach((i) -> {
             itens.add(new ItemDoPedidoDTO(i));
         });
+        pedido.calcularTotalPedido();
+        this.valorTotal = pedido.getValorTotal();
     }
+
 }

@@ -1,8 +1,6 @@
 package com.github.marcelo_neuro.ms_pedido.dto;
 
-import com.github.marcelo_neuro.ms_pedido.entity.ItemDoPedido;
 import com.github.marcelo_neuro.ms_pedido.entity.Pedido;
-import com.github.marcelo_neuro.ms_pedido.entity.Status;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.Valid;
@@ -33,7 +31,7 @@ public class PedidoDTO {
     @Enumerated(EnumType.STRING)
     private StatusDTO status;
     @NotEmpty(message = "Deve conter ao menos um item.")
-    private List<@Valid ItemDoPedidoDTO> itens = new ArrayList<>();
+    private List<@Valid ItemDoPedidoDTO> items = new ArrayList<>();
     private BigDecimal valorTotal;
 
     public PedidoDTO(Pedido pedido) {
@@ -43,8 +41,8 @@ public class PedidoDTO {
         this.data = pedido.getData();
         this.status = new StatusDTO(pedido.getStatus());
 
-        pedido.getItens().forEach((i) -> {
-            itens.add(new ItemDoPedidoDTO(i));
+        pedido.getItems().forEach((i) -> {
+            items.add(new ItemDoPedidoDTO(i));
         });
         pedido.calcularTotalPedido();
         this.valorTotal = pedido.getValorTotal();

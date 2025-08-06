@@ -31,10 +31,10 @@ public class Pedido {
     private BigDecimal valorTotal;
 
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
-    private List<ItemDoPedido> itens = new ArrayList<>();
+    private List<ItemDoPedido> items = new ArrayList<>();
 
     public void calcularTotalPedido() {
-        this.valorTotal = this.itens.stream()
+        this.valorTotal = this.items.stream()
                 .map(i -> i.getValorUnitario()
                         .multiply(BigDecimal.valueOf(i.getQuantidade())))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);

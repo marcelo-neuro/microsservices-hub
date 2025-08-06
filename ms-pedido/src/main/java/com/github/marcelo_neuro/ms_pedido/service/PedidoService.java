@@ -1,6 +1,7 @@
 package com.github.marcelo_neuro.ms_pedido.service;
 
 import com.github.marcelo_neuro.ms_pedido.dto.PedidoDTO;
+import com.github.marcelo_neuro.ms_pedido.dto.StatusDTO;
 import com.github.marcelo_neuro.ms_pedido.entity.ItemDoPedido;
 import com.github.marcelo_neuro.ms_pedido.entity.Pedido;
 import com.github.marcelo_neuro.ms_pedido.entity.Status;
@@ -48,7 +49,7 @@ public class PedidoService {
         copyToEntity(entity, dto);
         entity.calcularTotalPedido();
         entity = pedidoRepository.save(entity);
-        itemDoPedidoRepository.saveAll(entity.getItens());
+        itemDoPedidoRepository.saveAll(entity.getItems());
 
         return new PedidoDTO(entity);
     }
@@ -65,7 +66,7 @@ public class PedidoService {
             entity.calcularTotalPedido();
 
             entity = pedidoRepository.save(entity);
-            itemDoPedidoRepository.saveAll(entity.getItens());
+            itemDoPedidoRepository.saveAll(entity.getItems());
 
             return new PedidoDTO(entity);
         } catch (EntityNotFoundException e) {
@@ -80,12 +81,34 @@ public class PedidoService {
         pedidoRepository.deleteById(id);
     }
 
+    @Transactional
+    public void aprovarPagamentoPedido(Long id) {
+        Pedido pedido = pedidoRepository.getPedidoByIdWithItems(id);
+        if(pedido == null) {
+            throw new ResourceNotFoundException("Pedido id: " + id + " não encontrado");
+        }
+
+        pedido.setStatus(Status.PAGO);
+        pedidoRepository.updatePedido(Status.PAGO, pedido);
+    }
+
+    public PedidoDTO updatePedidoStatus(Long id, StatusDTO statusDto) {
+        Pedido pedido = pedidoRepository.getPedidoByIdWithItems(id);
+        if(pedido == null) {
+            throw new ResourceNotFoundException("Pedido id: " + id + " não encontrado");
+        }
+
+        pedido.setStatus(statusDto.getStatus());
+        pedidoRepository.updatePedido(statusDto.getStatus(), pedido);
+        return new PedidoDTO(pedido);
+    }
+
     private void copyToEntity(Pedido entity, PedidoDTO dto) {
 
         entity.setNome(dto.getNome());
         entity.setCpf(dto.getCpf());
 
-        dto.getItens().forEach((p) -> {
+        dto.getItems().forEach((p) -> {
             ItemDoPedido ip = new ItemDoPedido();
 
             ip.setQuantidade(p.getQuantidade());
@@ -93,7 +116,7 @@ public class PedidoService {
             ip.setValorUnitario(p.getValorUnitario());
             ip.setPedido(entity);
 
-            entity.getItens().add(ip);
+            entity.getItems().add(ip);
         });
     }
 }

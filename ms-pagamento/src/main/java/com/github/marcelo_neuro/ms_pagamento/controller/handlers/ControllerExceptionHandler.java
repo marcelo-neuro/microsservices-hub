@@ -44,4 +44,6 @@ public class ControllerExceptionHandler {
         e.getBindingResult().getFieldErrors().forEach(fe -> error.addError(fe.getField(), fe.getDefaultMessage()));
         return ResponseEntity.status(status).body(error);
     }
+
+
 }

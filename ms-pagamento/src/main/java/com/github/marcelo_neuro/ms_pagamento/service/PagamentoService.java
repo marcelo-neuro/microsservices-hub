@@ -3,20 +3,27 @@ package com.github.marcelo_neuro.ms_pagamento.service;
 import com.github.marcelo_neuro.ms_pagamento.dto.PagamentoDTO;
 import com.github.marcelo_neuro.ms_pagamento.entity.Pagamento;
 import com.github.marcelo_neuro.ms_pagamento.entity.Status;
+import com.github.marcelo_neuro.ms_pagamento.http.PedidoClient;
 import com.github.marcelo_neuro.ms_pagamento.repository.PagamentoRepository;
+import com.github.marcelo_neuro.ms_pagamento.service.exception.DatabaseException;
 import com.github.marcelo_neuro.ms_pagamento.service.exception.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PagamentoService {
 
     @Autowired
     private PagamentoRepository repository;
+    @Autowired
+    private PedidoClient pedidoClient;
 
     @Transactional(readOnly = true)
     public List<PagamentoDTO>  getAll() {
@@ -59,10 +66,29 @@ public class PagamentoService {
     }
 
     @Transactional
+    public void confirmarPagamentoPedido(Long id) {
+        Optional<Pagamento> pagamento = repository.findById(id);
+        if(pagamento.isEmpty()) {
+            throw new ResourceNotFoundException("Recurso não encontrado. ID: " + id);
+        }
+
+        pagamento.get().setStatus(Status.CONFIRMADO);
+        repository.save(pagamento.get());
+        pedidoClient.updatePagamentoPedido(pagamento.get().getPedidoId());
+    }
+
+    @Transactional(propagation = Propagation.SUPPORTS)
     public void delete(Long id) {
         if(!repository.existsById(id)) {
             throw new ResourceNotFoundException("Entidade não encontrada id:" + id);
         }
+
+        try {
+            repository.deleteById(id);
+        } catch (DataIntegrityViolationException e) {
+            throw new DatabaseException("Falha de integridade referencial.");
+        }
+
         repository.deleteById(id);
     }
 

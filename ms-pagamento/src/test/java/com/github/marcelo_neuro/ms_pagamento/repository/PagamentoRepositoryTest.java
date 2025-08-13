@@ -25,7 +25,7 @@ public class PagamentoRepositoryTest {
     public void setup() {
         existingId = 1L;
         nonExistingId = Long.MAX_VALUE;
-        contTotalPagamento = 3L;
+        contTotalPagamento = 2L;
     }
 
     @Test

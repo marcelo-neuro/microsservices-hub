@@ -2,6 +2,7 @@ package com.github.marcelo_neuro.ms_pedido.controller;
 
 import com.github.marcelo_neuro.ms_pedido.dto.PedidoDTO;
 import com.github.marcelo_neuro.ms_pedido.dto.StatusDTO;
+import com.github.marcelo_neuro.ms_pedido.kafka.PedidoProducer;
 import com.github.marcelo_neuro.ms_pedido.service.PedidoService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -19,6 +20,14 @@ public class PedidoController {
 
     @Autowired
     private PedidoService service;
+    @Autowired
+    private PedidoProducer producer;
+
+    @PostMapping("/enviar")
+    public ResponseEntity<String> sendMessage(@RequestParam String message) {
+        producer.sendMessage(message);
+        return ResponseEntity.ok("Mensagem enviada para o Kafka; " + message);
+    }
 
     @GetMapping
     public ResponseEntity<List<PedidoDTO>> findALl() {

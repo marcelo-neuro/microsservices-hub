@@ -7,6 +7,7 @@
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.5.4</version>
         <relativePath/> <!-- lookup parent from repository -->
+
     </parent>
     <groupId>com.github.marcelo_neuro</groupId>
     <artifactId>eureka_server</artifactId>

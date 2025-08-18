@@ -22,7 +22,7 @@ public class Pedido {
     private Long id;
     @Column(name = "nome", nullable = false, length = 100)
     private String nome;
-    @Column(nullable = false, length = 11)
+    @Column(nullable = false, length = 13)
     private String cpf;
     private LocalDate data;
     @Enumerated(EnumType.STRING)

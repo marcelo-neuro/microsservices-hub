@@ -1,8 +1,9 @@
 package com.github.marcelo_neuro.ms_pagamento.controller;
 
 import com.github.marcelo_neuro.ms_pagamento.dto.PagamentoDTO;
-import com.github.marcelo_neuro.ms_pagamento.entity.Pagamento;
+import com.github.marcelo_neuro.ms_pagamento.kafka.PagamentoPendenteProducer;
 import com.github.marcelo_neuro.ms_pagamento.service.PagamentoService;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,8 @@ public class PagamentoController {
 
     @Autowired
     private PagamentoService service;
+    @Autowired
+    private PagamentoPendenteProducer producer;
 
     @GetMapping
     public ResponseEntity<List<PagamentoDTO>> getAll() {
@@ -51,8 +54,17 @@ public class PagamentoController {
     }
 
     @PatchMapping("/{id}/confirmar")
-    public void confirmarPagamento(@PathVariable @NotNull Long id) {
+    @CircuitBreaker(name = "atualizarPedido",
+            fallbackMethod = "confirmarPagamentoFallBack")
+    public void confirmarPagamentoPedido(@PathVariable
+                                           @NotNull Long id) {
+
         service.confirmarPagamentoPedido(id);
+    }
+
+    public void confirmarPagamentoFallBack(Long id, Exception e) {
+        service.alterarStatusPagamento(id);
+        producer.enviarPagamentoPendente(id.toString());
     }
 
     @DeleteMapping("/{id}")

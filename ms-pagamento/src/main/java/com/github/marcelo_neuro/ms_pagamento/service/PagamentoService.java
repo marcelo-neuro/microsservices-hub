@@ -104,6 +104,18 @@ public class PagamentoService {
         repository.deleteById(id);
     }
 
+    @Transactional
+    public void confirmarPagamentoKafka(Long id) {
+        Optional<Pagamento> pagamento = repository.findById(id);
+
+        if(pagamento.isEmpty()) {
+            throw new ResourceNotFoundException("Recurso não encontrado id: " + id);
+        }
+
+        pagamento.get().setStatus(Status.CONFIRMADO);
+        repository.save(pagamento.get());
+    }
+
     private void copyDtoToEntity(PagamentoDTO dto, Pagamento entity) {
         entity.setId(dto.getId());
         entity.setNome(dto.getNome());

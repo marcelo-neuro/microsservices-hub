@@ -22,7 +22,7 @@ public class PagamentoController {
     @Autowired
     private PagamentoService service;
     @Autowired
-    private PagamentoPendenteProducer producer;
+    private PagamentoPendenteProducer pagamentoPendenteProducer;
 
     @GetMapping
     public ResponseEntity<List<PagamentoDTO>> getAll() {
@@ -64,7 +64,7 @@ public class PagamentoController {
 
     public void confirmarPagamentoFallBack(Long id, Exception e) {
         service.alterarStatusPagamento(id);
-        producer.enviarPagamentoPendente(id.toString());
+        pagamentoPendenteProducer.enviarPagamentoPendente(id.toString());
     }
 
     @DeleteMapping("/{id}")

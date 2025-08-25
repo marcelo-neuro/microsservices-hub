@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PedidoService {
@@ -92,6 +93,7 @@ public class PedidoService {
         pedidoRepository.updatePedido(Status.PAGO, pedido);
     }
 
+    @Transactional
     public PedidoDTO updatePedidoStatus(Long id, StatusDTO statusDto) {
         Pedido pedido = pedidoRepository.getPedidoByIdWithItems(id);
         if(pedido == null) {
